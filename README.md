@@ -98,6 +98,7 @@ s.close()
 </body>
 </html>
 ~~~
+## OUTPUT
 ## DOWNLOAD
 <img width="809" height="95" alt="Screenshot 2026-03-12 084910" src="https://github.com/user-attachments/assets/7e7161ad-1ed7-431e-8dd5-dbb245e339cb" />
 <img width="814" height="493" alt="Screenshot 2026-03-12 084637" src="https://github.com/user-attachments/assets/fd6c8a55-c08e-47bb-95cd-fcad116b869e" />
@@ -106,10 +107,5 @@ s.close()
 <img width="805" height="353" alt="Screenshot 2026-03-12 085245" src="https://github.com/user-attachments/assets/52573975-45d9-4166-9f36-6418994c241a" />
 <img width="807" height="235" alt="Screenshot 2026-03-12 084811" src="https://github.com/user-attachments/assets/2108e4c3-12c1-4202-a1bd-7f0afdfd3798" />
 
-
-
-
-
-
-
+## RESULT
 Thus the socket for HTTP for web page upload and download created and Executed
