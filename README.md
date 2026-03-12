@@ -16,37 +16,100 @@ To write a PYTHON program for socket for HTTP for web page upload and download
 6.Stop the program
 <BR>
 ## Program 
-```
+## Server.py
+~~~
+mport socket
+
+s = socket.socket()
+s.bind(("localhost",8080))
+s.listen(1)
+
+print("Server running...")
+
+while True:
+    c,addr = s.accept()
+    
+    request = c.recv(1024).decode()
+    print("Request received")
+
+    if "GET" in request:
+        f = open("index.html","r")
+        data = f.read()
+        f.close()
+
+        response = "HTTP/1.1 200 OK\n\n" + data
+        c.send(response.encode())
+
+    elif "POST" in request:
+        data = request.split("\n\n")[1]
+
+        f = open("upload.txt","w")
+        f.write(data)
+        f.close()
+
+        c.send("HTTP/1.1 200 OK\n\nFile Uploaded".encode())
+
+    c.close()
+
+  
+~~~
+## client.py
+~~~
 import socket
 
-def download_file(host, port, filename):
-    req = f"GET /{filename} HTTP/1.1\r\nHost: {host}\r\nConnection: close\r\n\r\n"
+s = socket.socket()
+s.connect(("localhost",8080))
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((host, port))
-        s.sendall(req.encode())
+ch = input("1.Download 2.Upload : ")
 
-        response = b""
-        while True:
-            data = s.recv(4096)
-            if not data:
-                break
-            response += data
+# Download webpage
+if ch == "1":
+    req = "GET / HTTP/1.1\nHost: localhost\n\n"
+    s.send(req.encode())
 
-    body = response.split(b"\r\n\r\n", 1)[1]
+    data = s.recv(4096)
+    print(data.decode())
 
-    out = f"downloaded_{filename}"
-    with open(out, "wb") as f:
-        f.write(body)
+# Upload file
+else:
+    msg = input("Enter data to upload: ")
 
-    print(f"File '{filename}' downloaded successfully as '{out}'")
+    req = "POST / HTTP/1.1\nHost: localhost\n\n" + msg
+    s.send(req.encode())
 
-if __name__ == "__main__":
-    download_file("127.0.0.1", 8080, "example.txt")
-```
-## OUTPUT
-<img width="1093" height="131" alt="Screenshot 2026-01-31 203436" src="https://github.com/user-attachments/assets/1639f9cb-be14-4d9f-864f-f039e3851266" />
-<img width="1178" height="166" alt="Screenshot 2026-01-31 203424" src="https://github.com/user-attachments/assets/f9fc6110-fdcf-43b6-952f-a8c5f0762c4a" />
+    data = s.recv(1024)
+    print(data.decode())
 
-## Result
+s.close()
+~~~
+## cn.html
+~~~
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+</head>
+<body>
+    <h1>Welcome to the Python HTTP Server!</h1>
+    <p>This is the default page served by the server.</p>
+
+</body>
+</html>
+~~~
+## DOWNLOAD
+<img width="809" height="95" alt="Screenshot 2026-03-12 084910" src="https://github.com/user-attachments/assets/7e7161ad-1ed7-431e-8dd5-dbb245e339cb" />
+<img width="814" height="493" alt="Screenshot 2026-03-12 084637" src="https://github.com/user-attachments/assets/fd6c8a55-c08e-47bb-95cd-fcad116b869e" />
+
+## UPLOAD
+<img width="805" height="353" alt="Screenshot 2026-03-12 085245" src="https://github.com/user-attachments/assets/52573975-45d9-4166-9f36-6418994c241a" />
+<img width="807" height="235" alt="Screenshot 2026-03-12 084811" src="https://github.com/user-attachments/assets/2108e4c3-12c1-4202-a1bd-7f0afdfd3798" />
+
+
+
+
+
+
+
 Thus the socket for HTTP for web page upload and download created and Executed
